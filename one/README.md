@@ -91,7 +91,7 @@ python3 manage.py migrate
 python3 manage.py createsuperuser
 Введите данные
 python3 manage.py runserver
-Перейдите по ссылке http://127.0.0.1/admin
+Перейдите по ссылке http://127.0.0.1:8000/admin
 Введите логин и пароль который вы придумали на первом шаге
 ~~~
 

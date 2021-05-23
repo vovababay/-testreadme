@@ -1,33 +1,24 @@
 <h4>Реализованная функциональность</h4>
 <ul>
-    <li>Функционал 1;</li>
-    <li>Функционал 2;</li>
-    <li>Функционал 3;</li>
+    <li>Telegram бот;</li>
+    <li>Сайт;</li>
 </ul> 
 <h4>Особенность проекта в следующем:</h4>
 <ul>
- <li>Киллерфича-1;</li>
- <li>Киллерфича-2;</li>
- <li>Киллерфича-3;</li>  
+ <li>Управление созданием заданий через телеграм бота;</li>
+ <li>Отслеживание техники на карте в реальном времени;</li>
+ <li>2 Варианта создания заданий и редактирования их;</li>
+ <li>2 Варианта создания работников, техники и редактирования их;</li>
  </ul>
 <h4>Основной стек технологий:</h4>
 <ul>
-    <li>LAMP/LEMP/FAMP/FEMP.</li>
-	<li>HTML, CSS, JavaScript, TypeScript.</li>
-	<li>PHP 7, MySQL.</li>
-	<li>Symfony, Laravel, Zend Framework, Yii, Kohana.</li>
-	<li>LESS, SASS, PostCSS.</li>
-	<li>Gulp, Webpack, Babel.</li>
-	<li>БЭМ.</li>
-	<li>React (Next.js), Vue (Nuxt.js), Angular.</li>
-	<li>Git, Mercurial.</li>
-	<li>Jenkins, Gitlab.</li>
-  
+	<li>HTML, CSS, JavaScript</li>
+	<li>React (Next.js)</li>
+	<li>Git</li>
+	<li>Python, Django, DRF</li>
  </ul>
 <h4>Демо</h4>
-<p>Демо сервиса доступно по адресу: http://demo.test </p>
-<p>Реквизиты тестового пользователя: email: <b>testuser@test.ru</b>, пароль: <b>testuser</b></p>
-
+<p>Демо сервиса доступно по адресу: http://aero.webjox.ru/ </p>
 
 
 
@@ -41,50 +32,68 @@
 
 УСТАНОВКА
 ------------
-### Установка пакета name
+### Установка пакетов для запуска django сервера
 
 Выполните 
 ~~~
 sudo apt-get update
 sudo apt-get upgrade
-sudo apt-get install name1
-sudo apt-get install mariadb-client mariadb-server
-git clone https://github.com/Sinclear/default_readme
-cd default_readme
+sudo apt-get install postgresql postgresql-contrib
+pip3 install psycopg2
+pip3 install psycopg2-binary
+pip3 install django
+pip3 install djangorestframework
 ...
 ~~~
+
+### Установка пакетов для запуска telegram бота
+
+Выполните 
+~~~
+pip3 install pytelegrambotapi
+Необходимо создать бота через @BotFather.
+После создания бота в файл /Aero/manager/telegram bot/settings.py в поле token поместить токен бота.
+...
+~~~
+
 ### База данных
 
 Необходимо создать пустую базу данных, а подключение к базе прописать в конфигурационный файл сервиса по адресу: папка_сервиса/...
 ~~~
-sudo systemctl restart mariadb
-sudo mysql_secure_installation
-mysql -u root -p
-mypassword
-CREATE DATABASE mynewdb;
-quit
+Установим пароль для пользователя postgres
+su - postgres
+psql -c "ALTER USER postgres WITH PASSWORD 'новый_пароль';"
+
+systemctl restart postgresql
+sudo -u postgres psql
+
+CREATE DATABASE air;
+\q
+exit или quit
 ~~~
 ### Выполнение миграций
+В файле Aero/settings.py в поле DATABASES прописать название базы данных(в нашем случае мы создали air), пользователя(postgres), пароль который вы придумали, хост(localhost или '127.0.0.1'), порт(5432)
+В файле /Aero/manager/telegram bot/db.py заполнить поля usr, passwd, host, db
 
-Для заполнения базы данных системной информацией выполните в корневой папке сервиса: 
+Для заполнения базы данных системной информацией выполните в папке с файлом manage.py: 
 ~~~
-mysql -u root -p -f mynewdb < папка_сервиса/...
-mypassword
+python3 manage.py makemigration
+python3 manage.py migrate
 ~~~
 и согласитесь с запросом
 
-### Установка зависимостей проекта
+### Заполнение данными
 
-Установка зависимостей осуществляется с помощью [Composer](http://getcomposer.org/). Если у вас его нет вы можете установить его по инструкции
-на [getcomposer.org](http://getcomposer.org/doc/00-intro.md#installation-nix).
+Для заполнения таблиц с пользователями, техникой и типами проблем можно перейти в панель администратора. 
 
-После этого выполнить команду в директории проекта:
-
+Выполните 
 ~~~
-composer install
+python3 manage.py createsuperuser
+Введите данные
+python3 manage.py runserver
+Перейдите по ссылке http://127.0.0.1/admin
+Введите логин и пароль который вы придумали на первом шаге
 ~~~
 
-РАЗРАБОТЧИКИ
-
-<h4>Иванов Иван fullstack https://t.me/test@name1 </h4>
-
+После данных действий в интерфейсе появятся данные.
+В телеграм боте при создании задачи будут списки возможных проблем, техники и рабочих которые могут приступить к работе. 
